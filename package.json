@@ -1,0 +1,66 @@
+{
+  "name": "symlinks",
+  "description": "Glob symlinks, async or sync. API and CLI. CLI also has `--del` for deleting matching symlinks.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/symlinks",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/symlinks",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/symlinks/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "symlinks": "cli.js"
+  },
+  "dependencies": {
+    "ansi-red": "^0.1.1",
+    "extend-shallow": "^2.0.1",
+    "is-symlink": "^0.1.1",
+    "matched": "^0.4.1",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "gulp-format-md": "^0.1.7",
+    "mocha": "*",
+    "rimraf": "^2.5.1"
+  },
+  "keywords": [
+    "async",
+    "fs",
+    "link",
+    "lstat",
+    "symbolic",
+    "symboliclink",
+    "symlink",
+    "sync"
+  ],
+  "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "reflinks": [
+      "verb",
+      "matched"
+    ],
+    "lint": {
+      "reflinks": true
+    }
+  }
+}
