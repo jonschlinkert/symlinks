@@ -1,7 +1,7 @@
 {
   "name": "symlinks",
   "description": "Glob symlinks, async or sync. API and CLI. CLI also has `--del` for deleting matching symlinks.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/jonschlinkert/symlinks",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/symlinks",
@@ -32,9 +32,9 @@
     "minimist": "^1.2.0"
   },
   "devDependencies": {
-    "gulp-format-md": "^0.1.7",
-    "mocha": "*",
-    "rimraf": "^2.5.1"
+    "gulp-format-md": "^0.1.9",
+    "mocha": "^2.4.5",
+    "rimraf": "^2.5.2"
   },
   "keywords": [
     "async",
