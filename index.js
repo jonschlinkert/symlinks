@@ -1,46 +1,50 @@
 'use strict';
 
-var path = require('path');
-var glob = require('matched');
-var isSymlink = require('is-symlink');
-var extend = require('extend-shallow');
+const path = require('path');
+const glob = require('matched');
+const isSymlink = require('is-symlink');
 
 /**
- * Get an array of symlinks that match the given glob pattern.
+ * Get an array of symlinks that match the specified glob pattern(s).
  *
  * ```js
- * symlinks('node_modules/*', function(err, links) {
- *   if (err) throw err;
- *   console.log(links);
- * });
+ * // symlinks(pattern[, options, callback])
+ * symlinks('node_modules/*')
+ *   .then(links => console.log('SYMLINKS:', links))
+ *   .catch(console.error);
  * ```
- * @param {String|Array} `patterns`
- * @param {Object} `options` Options to pass to [matched][]
- * @param {Function} `cb` callback that exposes `err` and an array of symlinks
+ * @param {String|Array} `patterns` One or more glob patterns for matching symlinks.
+ * @param {Object} [options] Options to pass to [matched][].
+ * @param {Function} [callback]
  * @api public
  */
 
-module.exports = function symlinks(patterns, options, cb) {
+const symlinks = (patterns, options, cb) => {
   if (typeof options === 'function') {
     cb = options;
     options = {};
   }
 
-  var opts = extend({cwd: process.cwd()}, options);
-  glob(patterns, opts, function(err, files) {
-    if (err) return cb(err);
+  let promise = new Promise(async(resolve, reject) => {
+    let opts = Object.assign({ cwd: process.cwd() }, options);
+    let files = await glob(patterns, opts);
+    let links = [];
 
-    var len = files.length;
-    var res = [];
-
-    while (len--) {
-      var file = path.resolve(process.cwd(), files[len]);
-      if (isSymlink.sync(file)) {
-        res.push(file);
+    for (const name of files) {
+      let file = path.resolve(opts.cwd, name);
+      if (await isSymlink(file).catch(reject)) {
+        links.push(file);
       }
     }
-    cb(null, res);
+    resolve(links);
   });
+
+  if (typeof cb === 'function') {
+    promise.then(links => cb(null, links)).catch(cb);
+    return;
+  }
+
+  return promise;
 };
 
 /**
@@ -48,26 +52,27 @@ module.exports = function symlinks(patterns, options, cb) {
  * glob pattern.
  *
  * ```js
- * var links = symlinks.sync('node_modules/*');
- * console.log(links);
+ * // symlinks.sync(pattern[, options])
+ * console.log(symlinks.sync('node_modules/*'));
  * ```
  * @param {String|Array} `patterns`
  * @param {Object} `options` Options to pass to [matched][]
- * @param {Function} `cb` callback that exposes `err` and an array of symlinks
+ * @return {Array} Returns an array of symbolic links
  * @api public
  */
 
-module.exports.sync = function symlinksSync(patterns, options) {
-  var opts = extend({cwd: process.cwd()}, options);
-  var files = glob.sync(patterns, opts);
-  var len = files.length;
-  var res = [];
+symlinks.sync = (patterns, options) => {
+  let opts = Object.assign({ cwd: process.cwd() }, options);
+  let files = glob.sync(patterns, opts);
+  let links = [];
 
-  while (len--) {
-    var file = path.resolve(opts.cwd, files[len]);
+  for (const name of files) {
+    let file = path.resolve(opts.cwd, name);
     if (isSymlink.sync(file)) {
-      res.push(file);
+      links.push(file);
     }
   }
-  return res;
+  return links;
 };
+
+module.exports = symlinks;
