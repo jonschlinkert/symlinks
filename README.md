@@ -1,69 +1,67 @@
-# symlinks [![NPM version](https://img.shields.io/npm/v/symlinks.svg)](https://www.npmjs.com/package/symlinks) [![Build Status](https://img.shields.io/travis/jonschlinkert/symlinks.svg)](https://travis-ci.org/jonschlinkert/symlinks)
+# symlinks [![NPM version](https://img.shields.io/npm/v/symlinks.svg?style=flat)](https://www.npmjs.com/package/symlinks) [![NPM monthly downloads](https://img.shields.io/npm/dm/symlinks.svg?style=flat)](https://npmjs.org/package/symlinks) [![NPM total downloads](https://img.shields.io/npm/dt/symlinks.svg?style=flat)](https://npmjs.org/package/symlinks) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/symlinks.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/symlinks)
 
 > Glob symlinks, async or sync. API and CLI. CLI also has `--del` for deleting matching symlinks.
+
+Please consider following this project's author, [Jon Schlinkert](https://github.com/jonschlinkert), and consider starring the project to show your :heart: and support.
 
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
 
 ```sh
-$ npm install symlinks --save
+$ npm install --save symlinks
 ```
 
-## Usage
+## CLI Usage
 
-```js
-var symlinks = require('symlinks');
+Get a list of symlinks that match a glob pattern<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.
 
-// async
-symlinks('node_modules/*', function(err, links) {
-  if (err) throw err;
-  console.log(links);
-});
-
-// sync
-var links = symlinks.sync('node_modules/*');
-console.log(links);
-```
-
-## CLI
-
-Get a list of symlinks that match a glob pattern (glob pattern might need to be wrapped in quotes depending on the pattern and platform):
+**Examples**
 
 ```sh
-$ symlinks node_modules/*
+# symlinks <pattern> [options]
+$ symlinks "node_modules/*"
+$ symlinks "node_modules/*" -d
+$ symlinks "node_modules/*" -c
+$ symlinks "node_modules/*" -g
+$ symlinks "node_modules/*" -gd
+$ symlinks "node_modules/*" -gc
 ```
+
+**CLI Options**
+
+| Flag | Description | 
+| --- | --- |
+| `-d`, `--delete` | Delete matching symlinks |
+| `-g`, `--global` | Match symlinks in NPM's global directory |
+| `-c`, `--clean` | Delete symlinks that do not resolve to a [realpath](https://nodejs.org/api/fs.html#fs_fs_realpath_path_options_callback) |
 
 **Delete**
 
-Delete matching symlinks with `--del` (glob pattern might need to be wrapped in quotes depending on the pattern and platform):
+Delete matching<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1]</a></sup> symlinks with `--del`:
 
 ```sh
-$ symlinks node_modules/* --del
+$ symlinks "node_modules/*" --del
 ```
 
-## API
-
-### [symlinks](index.js#L23)
-
-Get an array of symlinks that match the given glob pattern.
+## API Usage
 
 **Params**
 
-* `patterns` **{String|Array}**
-* `options` **{Object}**: Options to pass to [matched](https://github.com/jonschlinkert/matched)
-* `cb` **{Function}**: callback that exposes `err` and an array of symlinks
+* `patterns` **{String|Array}**: One or more glob patterns for matching symlinks.
+* **{Object}**: Options to pass to [matched](https://github.com/jonschlinkert/matched).
+* **{Function}**
 
 **Example**
 
 ```js
-symlinks('node_modules/*', function(err, links) {
-  if (err) throw err;
-  console.log(links);
-});
+// symlinks(pattern[, options, callback])
+symlinks('node_modules/*')
+  .then(links => console.log('SYMLINKS:', links))
+  .catch(console.error);
 ```
 
-### [.sync](index.js#L60)
+### [.sync](index.js#L64)
 
 Synchronous version, returns an array of symlinks that match the given glob pattern.
 
@@ -71,53 +69,70 @@ Synchronous version, returns an array of symlinks that match the given glob patt
 
 * `patterns` **{String|Array}**
 * `options` **{Object}**: Options to pass to [matched](https://github.com/jonschlinkert/matched)
-* `cb` **{Function}**: callback that exposes `err` and an array of symlinks
+* `returns` **{Array}**: Returns an array of symbolic links
 
 **Example**
 
 ```js
-var links = symlinks.sync('node_modules/*');
-console.log(links);
+// symlinks.sync(pattern[, options])
+console.log(symlinks.sync('node_modules/*'));
 ```
 
-## Contributing
+## About
 
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/symlinks/issues/new).
+<details>
+<summary><strong>Contributing</strong></summary>
 
-## Building docs
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
 
-Generate readme and API documentation with [verb](https://github.com/verbose/verb):
+</details>
+
+<details>
+<summary><strong>Running Tests</strong></summary>
+
+Running and reviewing unit tests is a great way to get familiarized with a library and its API. You can install dependencies and run tests with the following command:
 
 ```sh
-$ npm install verb && npm run docs
+$ npm install && npm test
 ```
 
-Or, if [verb](https://github.com/verbose/verb) is installed globally:
+</details>
+
+<details>
+<summary><strong>Building docs</strong></summary>
+
+_(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
+
+To generate the readme, run the following command:
 
 ```sh
-$ verb
+$ npm install -g verbose/verb#dev verb-generate-readme && verb
 ```
 
-## Running tests
+</details>
 
-Install dev dependencies:
-
-```sh
-$ npm install -d && npm test
-```
-
-## Author
+### Author
 
 **Jon Schlinkert**
 
-* [github/jonschlinkert](https://github.com/jonschlinkert)
-* [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
+* [LinkedIn Profile](https://linkedin.com/in/jonschlinkert)
+* [GitHub Profile](https://github.com/jonschlinkert)
+* [Twitter Profile](https://twitter.com/jonschlinkert)
 
-## License
+### License
 
-Copyright © 2016 [Jon Schlinkert](https://github.com/jonschlinkert)
-Released under the [MIT license](https://github.com/jonschlinkert/symlinks/blob/master/LICENSE).
+Copyright © 2018, [Jon Schlinkert](https://github.com/jonschlinkert).
+Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb](https://github.com/verbose/verb), v0.9.0, on February 29, 2016._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on August 09, 2018._
+
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1"  class="footnote-item">Globs probably need to be wrapped in quotes or escaped with backticks depending on shell. <a href="#fnref1" class="footnote-backref">↩</a> <a href="#fnref1:1" class="footnote-backref">↩</a>
+
+</li>
+</ol>
+</section>
