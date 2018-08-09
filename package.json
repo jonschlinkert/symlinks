@@ -1,7 +1,7 @@
 {
   "name": "symlinks",
   "description": "Glob symlinks, async or sync. API and CLI. CLI also has `--del` for deleting matching symlinks.",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "homepage": "https://github.com/jonschlinkert/symlinks",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/symlinks",
